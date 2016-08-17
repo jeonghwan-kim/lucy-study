@@ -1,23 +1,19 @@
+'use strict';
+
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const port = 3000;
 let app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/echo', (req, res) => {
-  res.send(req.query.message);
-});
+app.use('/v1/users', require('./api/v1/user'))
+app.use('/v1/images', require('./api/v1/image'))
 
-app.get('/', (req, res) => {
-  res.send('Hello world' );
-});
+app.get('/', (req, res) => res.send('Hello world!'));
 
-app.post('/', (req, res) => {
-  console.log(req.body);
-  res.send(req.body);
-});
 
-app.listen(3000, () => console.log('server is running on 3000'));
+app.listen(port, () => console.log(`server is running on ${port}`));
